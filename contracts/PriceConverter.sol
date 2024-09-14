@@ -4,9 +4,6 @@ pragma solidity ^0.8.8;
 
 import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-// import "./AggregatorV3Interface.sol";
-
-// Address of deployed interface for interacting with the onchain datafeed on Sepolia 0x2cb920F445813D8E23B19B5cA38d5534Bf6e59D3
 library PriceConverter {
     uint256 constant PRECISION = 1e18;
 
