@@ -1,9 +1,9 @@
 require("@nomicfoundation/hardhat-toolbox")
 require("@nomicfoundation/hardhat-verify")
 require("dotenv").config()
-require("./tasks/blockNumber.js")
 require("hardhat-gas-reporter")
 require("solidity-coverage")
+require("hardhat-deploy")
 
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL
 const HOLESKY_RPC_URL = process.env.HOLESKY_RPC_URL
