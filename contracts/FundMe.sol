@@ -18,8 +18,11 @@ contract FundMe {
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
 
-    constructor() {
+    AggregatorV3Interface public priceFeed;
+
+    constructor(address priceFeedAddress) {
         i_owner = msg.sender;
+        priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
     modifier onlyOwner() {
@@ -38,7 +41,7 @@ contract FundMe {
     }
 
     function fund() public payable {
-        if (msg.value.getConversionRate() >= MINIMUM_USD) {
+        if (msg.value.getConversionRate(priceFeed) >= MINIMUM_USD) {
             revert NotEnoughEth();
         }
         funders.push(msg.sender);
@@ -46,7 +49,7 @@ contract FundMe {
     }
 
     function getMinimumUsdInWei() public view returns (uint256) {
-        return PriceConverter.convertMinimumUsdToWei(MINIMUM_USD);
+        return PriceConverter.convertMinimumUsdToWei(MINIMUM_USD, priceFeed);
     }
 
     function withdraw() public onlyOwner {

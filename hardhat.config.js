@@ -1,5 +1,4 @@
 require("dotenv").config()
-require("@nomicfoundation/hardhat-ethers")
 require("@nomiclabs/hardhat-waffle")
 require("@nomicfoundation/hardhat-verify")
 require("hardhat-gas-reporter")
