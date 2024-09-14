@@ -1,4 +1,3 @@
-require("@nomicfoundation/hardhat-toolbox")
 require("@nomicfoundation/hardhat-verify")
 require("dotenv").config()
 require("hardhat-gas-reporter")
@@ -17,12 +16,12 @@ module.exports = {
     networks: {
         hardhat: {
             chainId: 31337,
-            // gasPrice: 130000000000,
+              // gasPrice: 130000000000,
         },
         sepolia: {
             url: SEPOLIA_RPC_URL,
             accounts: [PRIVATE_KEY],
-            chainId: 11155111,
+            chainId: 11155111, 
             blockConfirmations: 6,
         },
         holesky: {

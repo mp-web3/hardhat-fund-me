@@ -2,7 +2,9 @@
 
 pragma solidity ^0.8.8;
 
-import "./AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+
+// import "./AggregatorV3Interface.sol";
 
 // Address of deployed interface for interacting with the onchain datafeed on Sepolia 0x2cb920F445813D8E23B19B5cA38d5534Bf6e59D3
 library PriceConverter {
@@ -16,8 +18,13 @@ library PriceConverter {
     }
 
     function getPrice() internal view returns (uint256) {
-        (, /* uint80 roundID */ int price, , , ) = /*uint startedAt*/ /*uint timeStamp*/ /*uint80 answeredInRound*/
-        priceFeed.latestRoundData();
+        (
+            ,
+            /* uint80 roundID */ int price /*uint startedAt*/ /*uint timeStamp*/ /*uint80 answeredInRound*/,
+            ,
+            ,
+
+        ) = priceFeed.latestRoundData();
 
         // price is expressed as ETH in terms of USD
         // so if ETH/USD is 3000$, `int price` will be 3000 + 1e8 = 3000_0000_0000
