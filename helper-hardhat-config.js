@@ -1,7 +1,7 @@
 const networkConfig = {
     11155111: {
         name: "sepolia",
-        ethUsdPriceFeed: "0x2cb920F445813D8E23B19B5cA38d5534Bf6e59D3",
+        ethUsdPriceFeed: "0x694AA1769357215DE4FAC081bf1f309aDC325306",
     },
 
     17000: {
@@ -10,7 +10,7 @@ const networkConfig = {
     },
 }
 
-const developmentChains = ["hardhat", "localhost"]
+const developmentChains = ["hardhat", "localhost", "holesky"]
 const DECIMALS = 8
 const INITIAL_ANSWER = 2 * 1e12
 
