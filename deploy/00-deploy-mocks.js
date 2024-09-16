@@ -25,4 +25,4 @@ module.exports = async (hre) => {
     }
 }
 
-module.exports.tags = ["all", "mocks"]
+module.exports.tags = ["all", "mocks", "mocks-local"]

@@ -1,7 +1,12 @@
 const networkConfig = {
     11155111: {
         name: "sepolia",
-        ethUsdPriceFeedAddress: "0x2cb920F445813D8E23B19B5cA38d5534Bf6e59D3",
+        ethUsdPriceFeed: "0x2cb920F445813D8E23B19B5cA38d5534Bf6e59D3",
+    },
+
+    17000: {
+        name: "holesky",
+        ethUsdPriceFeed: "",
     },
 }
 

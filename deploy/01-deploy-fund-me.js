@@ -1,20 +1,27 @@
-const { networkConfig } = require("../helper-hardhat-config")
+const { networkConfig, developmentChains } = require("../helper-hardhat-config")
 const { network } = require("hardhat")
 
 module.exports = async (hre) => {
     const { getNamedAccounts, deployments } = hre
-    const { deploy, log } = deployments
+    const { deploy, log, get } = deployments
     const { deployer } = await getNamedAccounts()
 
-    const chainId = network.config.chainId
-
-    // if the contract doesn't exist we deploy a minimal version of the contract for our local testing
-
-    const ethUsdPriceFeedAddress =
-        networkConfig[chainId]["ethUsdPriceFeedAddress"]
+    let ethUsdPriceFeedAddress
+    if (developmentChains.includes(network.name)) {
+        const ethUsdAggregator = await get("MockV3Aggregator") // = deployments.get(),
+        // but since we have already imported `get` from `deployments` module we ca simply use `get`
+        ethUsdPriceFeedAddress = ethUsdAggregator.address
+    } else {
+        ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
+    }
 
     const fundMe = await deploy("FundMe", {
         from: deployer,
-        args: [], // put priceFeed address here
+        args: [ethUsdPriceFeedAddress],
+        log: true,
     })
+
+    log("------------------------------------------")
 }
+
+module.exports.tags = ["all", "fundme"]

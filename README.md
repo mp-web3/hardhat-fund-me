@@ -24,3 +24,16 @@ check again here: https://youtu.be/gyMwXuJrbJQ?si=X21LzP70DSVDFOEW&t=36788
 
 Fortunately Chainlink has a Mock of the V3Aggregator here: https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/tests/MockV3Aggregator.sol
 
+### Running only Mocked contracts
+
+There is an easy way to deploy only our mock contracts without specifying the path
+
+At the end of the deploy-mock script 
+
+```
+module.exports.tags = ["all", "mocks"]
+```
+
+Run `yarn hardhat deploy --tags mocks`
+
+
