@@ -37,3 +37,16 @@ module.exports.tags = ["all", "mocks"]
 Run `yarn hardhat deploy --tags mocks`
 
 
+### Deploy and verify mock contracts on live testnet
+
+#### Deploy and verify mocks
+
+```
+yarn hardhat deploy --tags holesky --network holesky
+```
+
+#### Deploy and verify FundMe
+
+```
+yarn hardhat deploy --tags fundme --network holesky
+```

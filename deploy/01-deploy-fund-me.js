@@ -1,4 +1,8 @@
-const { networkConfig, developmentChains } = require("../helper-hardhat-config")
+const {
+    networkConfig,
+    developmentChains,
+    testnetChains,
+} = require("../helper-hardhat-config")
 const { network } = require("hardhat")
 const { verify } = require("../utils/verify")
 
@@ -9,7 +13,10 @@ module.exports = async (hre) => {
     const chainId = network.config.chainId
 
     let ethUsdPriceFeedAddress
-    if (developmentChains.includes(network.name)) {
+    if (
+        developmentChains.includes(network.name) ||
+        testnetChains.includes(network.name)
+    ) {
         const ethUsdAggregator = await get("MockV3Aggregator") // = deployments.get(),
         // but since we have already imported `get` from `deployments` module we ca simply use `get`
         ethUsdPriceFeedAddress = ethUsdAggregator.address
