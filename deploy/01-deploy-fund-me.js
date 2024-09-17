@@ -1,14 +1,14 @@
+const { network } = require("hardhat")
 const {
     networkConfig,
     developmentChains,
     testnetChains,
 } = require("../helper-hardhat-config")
-const { network } = require("hardhat")
 const { verify } = require("../utils/verify")
+require("dotenv").config
 
-module.exports = async (hre) => {
-    const { getNamedAccounts, deployments } = hre
-    const { deploy, log, get } = deployments
+module.exports = async ({ getNamedAccounts, deployments }) => {
+    const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
     const chainId = network.config.chainId
 
@@ -17,9 +17,10 @@ module.exports = async (hre) => {
         developmentChains.includes(network.name) ||
         testnetChains.includes(network.name)
     ) {
-        const ethUsdAggregator = await get("MockV3Aggregator") // = deployments.get(),
+        const ethUsdAggregator = await deployments.get("MockV3Aggregator") // = deployments.get(),
         // but since we have already imported `get` from `deployments` module we ca simply use `get`
         ethUsdPriceFeedAddress = ethUsdAggregator.address
+        log(ethUsdPriceFeedAddress)
     } else {
         ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
     }
@@ -28,7 +29,7 @@ module.exports = async (hre) => {
         from: deployer,
         args: [ethUsdPriceFeedAddress],
         log: true,
-        waitConfirmations: network.config.blockConfirmations || 4,
+        waitConfirmations: network.config.blockConfirmations || 1, //!IMPORTANT this must be set to 1 for hardhat to work!!!
     })
 
     // If the network is not a development chain, then we also want to verify the contracts

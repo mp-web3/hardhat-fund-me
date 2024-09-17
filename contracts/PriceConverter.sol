@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.8;
 
-import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 library PriceConverter {
     uint256 constant PRECISION = 1e18;

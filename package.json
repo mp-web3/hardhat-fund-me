@@ -6,7 +6,7 @@
   "author": "mp-web3 <mp.web3.t@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@chainlink/contracts": "1.2.0",
+    "@chainlink/contracts": "^0.3.1",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
     "@nomicfoundation/hardhat-ethers": "npm:hardhat-deploy-ethers",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
@@ -18,6 +18,7 @@
     "@typechain/hardhat": "^9.0.0",
     "@types/sinon-chai": "^3.2.3",
     "chai": "^4.2.0",
+    "dotenv": "^16.4.5",
     "ethereum-waffle": "^3.0.0",
     "ethers": "^5.0.0",
     "hardhat": "^2.22.10",

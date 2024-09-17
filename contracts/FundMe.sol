@@ -2,13 +2,15 @@
 
 pragma solidity ^0.8.8;
 
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./PriceConverter.sol";
 
-error NotOwner();
-error NotEnoughEth();
-error SendFailed();
-error CallFailed();
-
+/**
+ * @title A contract for crowd funding
+ * @author Mattia Papa
+ * @notice This contract is a sample of a funding contract
+ * @dev It implements PriceConverter as library
+ */
 contract FundMe {
     using PriceConverter for uint256;
 
@@ -20,16 +22,21 @@ contract FundMe {
 
     AggregatorV3Interface public priceFeed;
 
+    modifier onlyOwner() {
+        if (msg.sender != i_owner) {
+            revert FundMe__NotOwner();
+        }
+        _;
+    }
+
+    error FundMe__NotOwner();
+    error NotEnoughEth();
+    error SendFailed();
+    error CallFailed();
+
     constructor(address priceFeedAddress) {
         i_owner = msg.sender;
         priceFeed = AggregatorV3Interface(priceFeedAddress);
-    }
-
-    modifier onlyOwner() {
-        if (msg.sender != i_owner) {
-            revert NotOwner();
-        }
-        _;
     }
 
     receive() external payable {
@@ -40,6 +47,9 @@ contract FundMe {
         fund();
     }
 
+    /**
+     * @notice This function funds this contract
+     */
     function fund() public payable {
         if (msg.value.getConversionRate(priceFeed) >= MINIMUM_USD) {
             revert NotEnoughEth();

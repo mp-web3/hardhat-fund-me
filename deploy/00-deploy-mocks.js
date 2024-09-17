@@ -4,6 +4,7 @@ const {
     DECIMALS,
     INITIAL_ANSWER,
 } = require("../helper-hardhat-config")
+require("dotenv").config
 
 module.exports = async (hre) => {
     const { getNamedAccounts, deployments } = hre

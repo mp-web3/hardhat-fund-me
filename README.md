@@ -50,3 +50,71 @@ yarn hardhat deploy --tags holesky --network holesky
 ```
 yarn hardhat deploy --tags fundme --network holesky
 ```
+
+## Style Guide Solidity
+
+Link: https://docs.soliditylang.org/en/latest/style-guide.html
+
+
+### Order of the Layout
+
+Link: https://docs.soliditylang.org/en/latest/style-guide.html#order-of-layout
+
+1. Pragma statements
+2. Import statements
+3. Interfaces
+4. Libraries
+5. Contracts
+
+### Inside each contract, library, interface, use the following order: ####
+
+1. Type declarations
+2. State variables
+3. Events
+4. Errors
+5. Modifiers
+6. Functions
+
+### Functions Order ###
+
+1. constructor
+2. receive
+3. fallback
+4. external
+5. public
+6. internal
+7. private
+8. view/pure
+
+
+#### Error codes
+
+This is a best practice because you are able to identify from which contract the error is coming from.
+
+<Name-of-the-contract__Error>
+
+`error FundMe__NotOwner();`
+
+### NatSpecs
+
+Link: https://docs.soliditylang.org/en/latest/natspec-format.html#natspec
+
+Solidity contracts can use a special form of comments to provide rich documentation for functions, return variables and more. This special form is named the Ethereum Natural Language Specification Format (NatSpec).
+
+Natspec is really powerfull not just to inform about our contract and remember why we did things certain ways, but also because we can <b>generate the documentation automatically!</b>
+
+<i>The Solidity compiler only interprets tags if they are external or public. You are welcome to use similar comments for your internal and private functions, but those will not be parsed.</i>
+
+To generate the documentation: 
+
+```
+solc --userdoc --devdoc FundeMe.sol
+```
+## Testing 
+Rewatch from there to get a cleare picture of how the tests are set up 
+<b>VERY IMPORTANT!</b>
+Link: https://youtu.be/gyMwXuJrbJQ?si=XxBvgUQrm_cfUTmX&t=40268
+
+
+
+###

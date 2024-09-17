@@ -14,7 +14,7 @@ module.exports = async (hre) => {
     const chainId = network.config.chainId
 
     if (testnetChains.includes(network.name)) {
-        log("Local network detected! Deploying mocks...")
+        log("Holesky network detected! Deploying mocks...")
         const mockV3Aggregator = await deploy("MockV3Aggregator", {
             contract: "MockV3Aggregator",
             network: "holesky",
@@ -29,4 +29,4 @@ module.exports = async (hre) => {
     }
 }
 
-module.exports.tags = ["all", "mocks", "mocks-local", "holesky"]
+module.exports.tags = ["mocks", "mocks-local", "holesky"]
