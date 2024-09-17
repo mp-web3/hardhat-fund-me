@@ -22,12 +22,19 @@ describe("FundMe", function () {
         // by specifying the tags
         await deployments.fixture(["all"])
         // This way whenever we call a function on FundMe it will be from our deployer account
-        console.log(`fundMe address: ${fundMe.address}`)
-        fundMe = await ethers.getContractAt("FundMe", deployer)
+        // fundMe = await ethers.getContractAt("FundMe", deployer)
+        // console.log(`fundMe address: ${fundMe.address}`)
 
+        // Get the deployed FundMe contract address and then the contract instance
+        const fundMeDeployment = await deployments.get("FundMe")
+        fundMe = await ethers.getContractAt("FundMe", fundMeDeployment.address)
+
+        // Get the deployed MockV3Aggregator contract address and instance
+        const mockV3AggregatorDeployment =
+            await deployments.get("MockV3Aggregator")
         mockV3Aggregator = await ethers.getContractAt(
             "MockV3Aggregator",
-            deployer,
+            mockV3AggregatorDeployment.address,
         )
     })
 

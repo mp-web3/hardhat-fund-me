@@ -95,4 +95,8 @@ contract FundMe {
             revert CallFailed();
         }
     }
+
+    function getPriceFeed() public view returns (AggregatorV3Interface) {
+        return priceFeed;
+    }
 }

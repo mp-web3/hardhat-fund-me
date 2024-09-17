@@ -15,9 +15,8 @@ const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
 module.exports = {
     defaultNetwork: "hardhat",
     networks: {
-        localhost: {
+        hardhat: {
             chainId: 31337,
-            url: "http://127.0.0.1:8545/",
         },
         sepolia: {
             url: SEPOLIA_RPC_URL,

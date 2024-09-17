@@ -118,3 +118,21 @@ Link: https://youtu.be/gyMwXuJrbJQ?si=XxBvgUQrm_cfUTmX&t=40268
 
 
 ###
+
+
+
+## Fixes/Upgrades
+
+Great to hear it's working now!
+
+The main issue was in how you were interacting with the deployed contracts. Here's a breakdown of the problem and fix:
+
+1. **Problem with how contracts were retrieved**:
+   - Initially, you were trying to get the `FundMe` contract instance using `deployments.get("FundMe", deployer)`, but `deployments.get` only returns the deployment information (like the address of the deployed contract). 
+   - You need to use `ethers.getContractAt("FundMe", fundMeDeployment.address)` to create an instance of the contract to interact with. Similarly, this also applied to `MockV3Aggregator`.
+
+2. **Fixed approach**:
+   - First, get the deployment information with `deployments.get("FundMe")` to retrieve the contract's address.
+   - Then use `ethers.getContractAt("FundMe", fundMeDeployment.address)` to actually obtain the contract instance and interact with it.
+
+The change ensures that you're correctly retrieving and interacting with the deployed contract on the test network.
