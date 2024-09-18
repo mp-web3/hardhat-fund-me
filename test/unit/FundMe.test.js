@@ -42,7 +42,7 @@ describe("FundMe", function () {
     // In this first test we want to check that the address of the priceFeed has been set correctly
     describe("constructor", function () {
         it("sets the aggregator addresses correctly", async function () {
-            const response = await fundMe.s_priceFeed()
+            const response = await fundMe.getPriceFeed()
             assert.equal(response, mockV3Aggregator.address)
         })
     })
@@ -54,12 +54,12 @@ describe("FundMe", function () {
 
         it("updated the amount funded data structure", async () => {
             await fundMe.fund({ value: sendValue })
-            const response = await fundMe.s_addressToAmountFunded(deployer)
+            const response = await fundMe.getAddressToAmountFunded(deployer)
             assert.equal(response.toString(), sendValue.toString())
         })
         it("Adds funders to array of funders,", async () => {
             await fundMe.fund({ value: sendValue })
-            const funder = await fundMe.s_funders(0)
+            const funder = await fundMe.getFunder(0)
             assert.equal(deployer, funder)
         })
     })
@@ -138,14 +138,14 @@ describe("FundMe", function () {
             )
 
             // Make sure that funders[] array is reset
-            await expect(fundMe.s_funders(0)).to.be.reverted
+            await expect(fundMe.getFunder(0)).to.be.reverted
 
             // Make sure that the mapped accounts have a corresponding value of 0
             // Here `i = 0` because we also want to check for the deployer which also send funds to the contract
             // before each deployement
             for (i = 0; i < fundersNum; i++) {
                 assert.equal(
-                    await fundMe.s_addressToAmountFunded(accounts[i].address),
+                    await fundMe.getAddressToAmountFunded(accounts[i].address),
                     0,
                 )
             }
@@ -195,11 +195,11 @@ describe("FundMe", function () {
                 endingDeployerBalance.add(gasCost).toString(),
             )
 
-            await expect(fundMe.s_funders(0)).to.be.reverted
+            await expect(fundMe.getFunder(0)).to.be.reverted
 
             for (i = 0; i < fundersNum; i++) {
                 assert.equal(
-                    await fundMe.s_addressToAmountFunded(accounts[i].address),
+                    await fundMe.getAddressToAmountFunded(accounts[i].address),
                     0,
                 )
             }
