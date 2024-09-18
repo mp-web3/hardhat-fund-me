@@ -100,5 +100,55 @@ describe("FundMe", function () {
                 endingDeployerBalance.add(gasCost).toString(),
             )
         })
+
+        it("allows to withdraw after contract funded by multiple addresses", async () => {
+            // Arrange
+
+            const accounts = await ethers.getSigners()
+            const fundersNum = 6
+            for (let i = 1; i < fundersNum; i++) {
+                const fundMeConnectedContract = await fundMe.connect(
+                    accounts[i],
+                )
+                await fundMeConnectedContract.fund({ value: sendValue })
+            }
+
+            const startingFundMeBalance = await fundMe.provider.getBalance(
+                fundMe.address,
+            )
+            const startingDeployerBalance =
+                await fundMe.provider.getBalance(deployer)
+
+            const transactionResponse = await fundMe.withdraw()
+            const transactionReceipt = await transactionResponse.wait(1)
+            const { gasUsed, effectiveGasPrice } = transactionReceipt
+            const gasCost = gasUsed.mul(effectiveGasPrice)
+
+            const endingFundMeBalance = await fundMe.provider.getBalance(
+                fundMe.address,
+            )
+
+            const endingDeployerBalance =
+                await fundMe.provider.getBalance(deployer)
+
+            assert.equal(endingFundMeBalance, 0)
+            assert.equal(
+                startingFundMeBalance.add(startingDeployerBalance).toString(),
+                endingDeployerBalance.add(gasCost).toString(),
+            )
+
+            // Make sure that funders[] array is reset
+            await expect(fundMe.funders(0)).to.be.reverted
+
+            // Make sure that the mapped accounts have a corresponding value of 0
+            // Here `i = 0` because we also want to check for the deployer which also send funds to the contract
+            // before each deployement
+            for (i = 0; i < fundersNum; i++) {
+                assert.equal(
+                    await fundMe.addressToAmountFunded(accounts[i].address),
+                    0,
+                )
+            }
+        })
     })
 })
