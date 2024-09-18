@@ -1,10 +1,11 @@
 const { deployments, ethers, getNamedAccounts } = require("hardhat")
-const { assert } = require("chai")
+const { assert, expect } = require("chai")
 
 describe("FundMe", function () {
     let fundMe
     let deployer
     let mockV3Aggregator
+    const sendValue = ethers.utils.parseEther("1") // Converts to BigNumber
     beforeEach(async function () {
         // Deploying fundMe contract using Hardhat-deploy
         // Instead of getNamedAccount() we could have also done like so:
@@ -43,6 +44,61 @@ describe("FundMe", function () {
         it("sets the aggregator addresses correctly", async function () {
             const response = await fundMe.priceFeed()
             assert.equal(response, mockV3Aggregator.address)
+        })
+    })
+
+    describe("fund", function () {
+        it("Fails if not enough ETH is sent", async () => {
+            await expect(fundMe.fund()).to.be.revertedWith("NotEnoughEth()")
+        })
+
+        it("updated the amount funded data structure", async () => {
+            await fundMe.fund({ value: sendValue })
+            const response = await fundMe.addressToAmountFunded(deployer)
+            assert.equal(response.toString(), sendValue.toString())
+        })
+        it("Adds funders to array of funders,", async () => {
+            await fundMe.fund({ value: sendValue })
+            const funder = await fundMe.funders(0)
+            assert.equal(deployer, funder)
+        })
+    })
+
+    describe("withdraw", function () {
+        beforeEach(async function () {
+            await fundMe.fund({ value: sendValue })
+        })
+
+        it("withdraw ETH from a single founder", async () => {
+            // Arrange
+            const startingFundMeBalance = await fundMe.provider.getBalance(
+                fundMe.address,
+            )
+            const startingDeployerBalance =
+                await fundMe.provider.getBalance(deployer)
+
+            // Act
+            const transactionResponse = await fundMe.withdraw()
+            const transactionReceipt = await transactionResponse.wait(1)
+            const { gasUsed, effectiveGasPrice } = transactionReceipt
+            const gasCost = gasUsed.mul(effectiveGasPrice)
+
+            // We need to get gas costs
+            // In VS Code we can use a BreakPoint to interrupt the script and debug
+            // In this case we'll use it to see if gasCost is included in the transaction receipt
+
+            const endingFundMeBalance = await fundMe.provider.getBalance(
+                fundMe.address,
+            )
+            const endingDeployerBalance =
+                await fundMe.provider.getBalance(deployer)
+
+            // Assert
+            assert.equal(endingFundMeBalance, 0)
+            assert.equal(
+                startingFundMeBalance.add(startingDeployerBalance).toString(),
+                endingDeployerBalance.add(gasCost).toString(),
+            )
         })
     })
 })

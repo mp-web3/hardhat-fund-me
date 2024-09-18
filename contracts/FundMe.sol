@@ -51,7 +51,7 @@ contract FundMe {
      * @notice This function funds this contract
      */
     function fund() public payable {
-        if (msg.value.getConversionRate(priceFeed) >= MINIMUM_USD) {
+        if (msg.value.getConversionRate(priceFeed) <= MINIMUM_USD) {
             revert NotEnoughEth();
         }
         funders.push(msg.sender);
@@ -83,7 +83,7 @@ contract FundMe {
         /// 2. send
         // send revert only if we specify the require
         bool sendSuccess = payable(msg.sender).send(address(this).balance);
-        if (sendSuccess) {
+        if (!sendSuccess) {
             revert SendFailed();
         }
         /// 3. call
@@ -91,7 +91,7 @@ contract FundMe {
         (bool callSuccess, ) = payable(msg.sender).call{
             value: address(this).balance
         }("");
-        if (callSuccess) {
+        if (!callSuccess) {
             revert CallFailed();
         }
     }
