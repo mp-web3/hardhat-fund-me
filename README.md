@@ -117,9 +117,42 @@ Link: https://youtu.be/gyMwXuJrbJQ?si=XxBvgUQrm_cfUTmX&t=40268
 
 
 
-###
+## Gas Optimization, storage and memory
 
+Link to Opcodes with associated costs: https://github.com/crytic/evm-opcodes
 
+### Storage variables
+
+When we declare a storage variable it get slotted in a 32 bytes long format in the storage in its hex format.
+
+Every time we declare a new storage variable it occupies the next slot in the storage. 
+
+#### Arrays example
+
+For dynamic variables such as arrays, the object array take up a slot as hex vaule, the elements inside the array are hashed.
+
+So each array takes up 2 slots:
+- A slot which contains a hex value representing the lenght of the array
+- A slot which contains a hex value representing the hashed elements of the array
+
+### Constant and Immutable variables
+
+Constant and Immutable variables does not occupy a slot in the storage.
+In fact they are part of the contract bytecodes itself (since they cannot change).
+
+### Variables in functions
+
+Variables declared inside a function only exist for the duration of the function execution, therefore they are not added to storage.
+
+They are instead saved in a dedicated temporary data structure.
+
+### Strings
+
+Strings are technically stored as dynamic arrays, therefore we need to specify if they should be in `storage` or `memory`
+
+### What does it matter for gas where we store our variables? 
+
+Reading and writing into storage is way more expensive than memory
 
 ## Fixes/Upgrades
 

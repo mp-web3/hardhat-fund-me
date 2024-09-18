@@ -65,13 +65,14 @@ module.exports = {
         enabled: false,
     },
     gasReporter: {
-        enabled: false,
+        enabled: true,
+        noColors: true,
         outputFile: "./reports/gas-report.txt",
         currency: "USD",
-        coinmarketcap: COINMARKETCAP_API_KEY,
-        L1: "ethereum",
+        // coinmarketcap: COINMARKETCAP_API_KEY,
+        // L1: "ethereum",
         token: "ETH",
-        L1Etherscan: ETHERSCAN_API_KEY,
+        // L1Etherscan: ETHERSCAN_API_KEY,
     },
     solidity: {
         compilers: [
