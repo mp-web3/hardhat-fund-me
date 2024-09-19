@@ -154,6 +154,23 @@ Strings are technically stored as dynamic arrays, therefore we need to specify i
 
 Reading and writing into storage is way more expensive than memory
 
+## Staging Tests on testnet 
+
+```
+yarn hardhat test --network holesky
+```
+
+## Running scripts on testnet
+
+```
+yarn hardhat run scripts/fund.js --network holesky
+```
+
+```
+yarn hardhat run scripts/withdraw.js --network holesky
+```
+
+
 ## Fixes/Upgrades
 
 Great to hear it's working now!
